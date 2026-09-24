@@ -228,11 +228,43 @@ class ProfileTest extends TestCase
 
     // ---- 入口（リンク） ----
 
-    public function test_ヘッダーの名前は自分のプロフィールへのリンクになっている(): void
+    public function test_ヘッダーに自分のプロフィールへのリンクが表示される(): void
     {
         $this->actingAs($this->me)
             ->get(route('posts.index'))
-            ->assertSee(route('users.show', $this->me), false);
+            ->assertSee('<a href="'.route('users.show', $this->me).'" class="nav-link">', false)
+            ->assertSee('プロフィール');
+    }
+
+    public function test_ヘッダーにログアウトが表示されpostで送られる(): void
+    {
+        $this->actingAs($this->me)
+            ->get(route('posts.index'))
+            ->assertSee('<form action="'.route('logout').'" method="POST">', false)
+            ->assertSee('>ログアウト</button>', false);
+    }
+
+    public function test_ヘッダーは上部に固定される(): void
+    {
+        $this->actingAs($this->me)
+            ->get(route('posts.index'))
+            ->assertSee('.chrome { position: sticky; top: 0;', false);
+    }
+
+    public function test_ヘッダーにメールアドレスは表示されない(): void
+    {
+        $this->actingAs($this->me)
+            ->get(route('posts.index'))
+            ->assertDontSee('me@example.com');
+    }
+
+    public function test_ヘッダーからログアウトできる(): void
+    {
+        $this->actingAs($this->me)
+            ->post(route('logout'))
+            ->assertRedirect('/');
+
+        $this->assertGuest();
     }
 
     public function test_タイムラインの投稿者は本人のプロフィールへのリンクになっている(): void

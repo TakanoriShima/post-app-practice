@@ -13,12 +13,10 @@
         .chrome-row { display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; padding: 0.6rem 1rem; }
         .brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; }
         .brand .mark { width: 28px; height: 28px; border-radius: 38%; background: linear-gradient(135deg, #FFB03A, #FF7A59); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 800; flex-shrink: 0; }
-        .me { display: flex; align-items: center; gap: 0.7rem; min-width: 0; }
-        .me .name { font-size: 0.8rem; color: #5B6570; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .me a.name:hover { text-decoration: underline; text-underline-offset: 3px; }
-        .logout-btn { background: #FFFFFF; color: #0F1419; border: 1px solid #D3D9DE; padding: 0.38rem 1rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: inherit; flex-shrink: 0; }
-        .logout-btn:hover { background: #F7F8F9; }
-        .logout-btn:focus-visible { outline: 2px solid #E8792B; outline-offset: 2px; }
+        .me { display: flex; align-items: center; gap: 0.2rem; flex-shrink: 0; }
+        .nav-link { display: inline-flex; align-items: center; gap: 0.4rem; background: none; border: none; padding: 0.35rem 0.7rem; border-radius: 999px; font-size: 0.85rem; font-weight: 700; color: #0F1419; cursor: pointer; font-family: inherit; }
+        .nav-link:hover { background: #F0F1F3; }
+        .nav-link:focus-visible { outline: 2px solid #E8792B; outline-offset: 2px; }
         .page-title { padding: 0.55rem 1rem 0.7rem; font-weight: 800; font-size: 1.06rem; }
         .post { display: flex; gap: 0.75rem; padding: 0.9rem 1rem; border-bottom: 1px solid #EFF1F4; }
         .post:hover { background: #F7F8F9; }
@@ -46,13 +44,16 @@
         <header class="chrome">
             <div class="chrome-row">
                 <a href="{{ route('posts.index') }}" class="brand"><span class="mark">つ</span>つぶやき投稿アプリ</a>
-                <div class="me">
-                    <a href="{{ route('users.show', auth()->user()) }}" class="name">{{ auth()->user()->name }}（{{ auth()->user()->email }}）</a>
+                <nav class="me" aria-label="ユーザーメニュー">
+                    <a href="{{ route('users.show', auth()->user()) }}" class="nav-link">
+                        <x-avatar :user="auth()->user()" :size="28" />
+                        プロフィール
+                    </a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="logout-btn">ログアウト</button>
+                        <button type="submit" class="nav-link">ログアウト</button>
                     </form>
-                </div>
+                </nav>
             </div>
             <div class="page-title">ホーム</div>
         </header>

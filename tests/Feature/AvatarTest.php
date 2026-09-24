@@ -378,6 +378,22 @@ class AvatarTest extends TestCase
             ->assertSee('src="'.$replierUrl.'"', false);
     }
 
+    public function test_ヘッダーに自分のアバターが小さく表示される(): void
+    {
+        $url = $this->setAvatar($this->me);
+
+        $this->actingAs($this->me->fresh())->get(route('posts.index'))
+            ->assertSee('src="'.$url.'" alt="わたし"', false)
+            ->assertSee('width: 28px; height: 28px', false);
+    }
+
+    public function test_アバター未設定のヘッダーには頭文字のアイコンが出る(): void
+    {
+        $this->actingAs($this->me)->get(route('posts.index'))
+            ->assertSee('width: 28px; height: 28px', false)
+            ->assertSee('>わ</div>', false);
+    }
+
     public function test_プロフィールに画像が表示される(): void
     {
         $url = $this->setAvatar($this->other);
