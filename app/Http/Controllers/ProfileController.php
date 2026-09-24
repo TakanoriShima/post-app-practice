@@ -22,10 +22,10 @@ class ProfileController extends Controller
 
         // 新しい順（同時刻なら id の新しい順）。表示するタブの分だけ取得する
         if ($tab === 'replies') {
-            $replies = $user->replies()->with(['user', 'post'])->latest()->orderByDesc('id')->get();
+            $replies = $user->replies()->with(['user', 'post'])->withLikeState($request->user())->latest()->orderByDesc('id')->get();
             $posts = collect();
         } else {
-            $posts = $user->posts()->with(['user', 'category'])->withCount('replies')->latest()->orderByDesc('id')->get();
+            $posts = $user->posts()->with(['user', 'category'])->withCount('replies')->withLikeState($request->user())->latest()->orderByDesc('id')->get();
             $replies = collect();
         }
 

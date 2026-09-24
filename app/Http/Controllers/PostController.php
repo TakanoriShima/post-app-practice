@@ -8,19 +8,19 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with(['user', 'category'])->withCount('replies')->latest()->get();
+        $posts = Post::with(['user', 'category'])->withCount('replies')->withLikeState($request->user())->latest()->get();
 
         return view('posts.index', compact('posts'));
     }
 
-    public function show(Post $post)
+    public function show(Request $request, Post $post)
     {
-        $post->load(['user', 'category']);
+        $post->load(['user', 'category'])->loadLikeState($request->user());
 
         // 古い順（同時刻なら id 順）
-        $replies = $post->replies()->with('user')->orderBy('created_at')->orderBy('id')->get();
+        $replies = $post->replies()->with('user')->withLikeState($request->user())->orderBy('created_at')->orderBy('id')->get();
 
         return view('posts.show', compact('post', 'replies'));
     }

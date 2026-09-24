@@ -258,8 +258,8 @@ class ReplyTest extends TestCase
 
         $this->actingAs($this->other)
             ->get(route('posts.show', $this->post))
-            ->assertSee(route('replies.destroy', $mine), false)
-            ->assertDontSee(route('replies.destroy', $theirs), false);
+            ->assertSee('action="'.route('replies.destroy', $mine).'"', false)
+            ->assertDontSee('action="'.route('replies.destroy', $theirs).'"', false);
     }
 
     public function test_未ログインではリプライを消せない(): void

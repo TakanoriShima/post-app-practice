@@ -59,7 +59,7 @@
         </header>
 
         <main>
-            <article class="post main">
+            <article class="post main" id="post-{{ $post->id }}">
                 <x-avatar :user="$post->user" :size="44" :link="true" />
                 <div class="post-body">
                     <div class="post-head">
@@ -69,6 +69,9 @@
                     </div>
                     <p class="post-title">{{ $post->title }}</p>
                     <p class="post-text">{{ $post->content }}</p>
+                    <div class="post-footer">
+                        <x-like-button :model="$post" type="post" />
+                    </div>
                 </div>
             </article>
 
@@ -78,7 +81,7 @@
                 <p class="empty">まだリプライがありません。</p>
             @else
                 @foreach ($replies as $reply)
-                    <article class="post">
+                    <article class="post" id="reply-{{ $reply->id }}">
                         <x-avatar :user="$reply->user" :size="44" :link="true" />
                         <div class="post-body">
                             <div class="post-head">
@@ -86,15 +89,18 @@
                                 <span class="time">{{ $reply->created_at->format('n月j日 H:i') }}</span>
                             </div>
                             <p class="post-text">{{ $reply->content }}</p>
-                            @can('delete', $reply)
-                                <div class="post-actions">
-                                    <form action="{{ route('replies.destroy', $reply) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit">削除</button>
-                                    </form>
-                                </div>
-                            @endcan
+                            <div class="post-footer">
+                                <x-like-button :model="$reply" type="reply" />
+                                @can('delete', $reply)
+                                    <div class="post-actions">
+                                        <form action="{{ route('replies.destroy', $reply) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">削除</button>
+                                        </form>
+                                    </div>
+                                @endcan
+                            </div>
                         </div>
                     </article>
                 @endforeach

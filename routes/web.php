@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\ReplyLikeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,8 +21,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::post('/posts/{post}/like', [PostLikeController::class, 'store'])->name('posts.like.store');
+    Route::delete('/posts/{post}/like', [PostLikeController::class, 'destroy'])->name('posts.like.destroy');
     Route::post('/posts/{post}/replies', [ReplyController::class, 'store'])->name('replies.store');
     Route::delete('/replies/{reply}', [ReplyController::class, 'destroy'])->name('replies.destroy');
+    Route::post('/replies/{reply}/like', [ReplyLikeController::class, 'store'])->name('replies.like.store');
+    Route::delete('/replies/{reply}/like', [ReplyLikeController::class, 'destroy'])->name('replies.like.destroy');
     Route::get('/users/{user}', [ProfileController::class, 'show'])->name('users.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

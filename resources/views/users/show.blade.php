@@ -92,7 +92,7 @@
 
             @if ($tab === 'replies')
                 @forelse ($replies as $reply)
-                    <article class="post">
+                    <article class="post" id="reply-{{ $reply->id }}">
                         <x-avatar :user="$reply->user" :size="44" />
                         <div class="post-body">
                             <div class="post-head">
@@ -101,6 +101,9 @@
                             </div>
                             <p class="reply-to">「<a href="{{ route('posts.show', $reply->post) }}">{{ $reply->post->title }}</a>」へのリプライ</p>
                             <p class="post-text">{{ $reply->content }}</p>
+                            <div class="post-footer">
+                                <x-like-button :model="$reply" type="reply" />
+                            </div>
                         </div>
                     </article>
                 @empty
