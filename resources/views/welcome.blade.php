@@ -33,6 +33,7 @@
             <div class="user-info"><strong>ログイン中:</strong> {{ auth()->user()->name }}</div>
             <div class="links">
                 <a href="{{ route('posts.index') }}" class="btn-primary">タイムラインへ</a>
+                <a href="{{ route('posts.create') }}" class="btn-secondary">新規投稿</a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn-danger">ログアウト</button>

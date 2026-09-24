@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ポストを編集 / つぶやき投稿アプリ</title>
+    <title>新規投稿 / つぶやき投稿アプリ</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif; background: #FFFFFF; color: #0F1419; font-feature-settings: "palt"; }
@@ -38,14 +38,15 @@
             <div class="chrome-row">
                 <a href="{{ route('posts.index') }}" class="brand"><span class="mark">つ</span>つぶやき投稿アプリ</a>
             </div>
-            <div class="page-title">ポストを編集</div>
+            <div class="page-title">新規投稿</div>
         </header>
 
         <main>
             @include('posts._form', [
-                'action' => route('posts.update', $post),
-                'method' => 'PUT',
-                'submitLabel' => '更新',
+                'action' => route('posts.store'),
+                'method' => 'POST',
+                'post' => null,
+                'submitLabel' => '投稿する',
                 'cancelUrl' => route('posts.index'),
             ])
         </main>

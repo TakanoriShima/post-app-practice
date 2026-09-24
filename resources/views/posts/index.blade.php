@@ -16,6 +16,8 @@
         .me { display: flex; align-items: center; gap: 0.2rem; flex-shrink: 0; }
         .nav-link { display: inline-flex; align-items: center; gap: 0.4rem; background: none; border: none; padding: 0.35rem 0.7rem; border-radius: 999px; font-size: 0.85rem; font-weight: 700; color: #0F1419; cursor: pointer; font-family: inherit; }
         .nav-link:hover { background: #F0F1F3; }
+        .nav-primary { background: #0F1419; color: #fff; }
+        .nav-primary:hover { background: #272C30; }
         .nav-link:focus-visible { outline: 2px solid #E8792B; outline-offset: 2px; }
         .page-title { padding: 0.55rem 1rem 0.7rem; font-weight: 800; font-size: 1.06rem; }
         .post { display: flex; gap: 0.75rem; padding: 0.9rem 1rem; border-bottom: 1px solid #EFF1F4; }
@@ -45,6 +47,7 @@
             <div class="chrome-row">
                 <a href="{{ route('posts.index') }}" class="brand"><span class="mark">つ</span>つぶやき投稿アプリ</a>
                 <nav class="me" aria-label="ユーザーメニュー">
+                    <a href="{{ route('posts.create') }}" class="nav-link nav-primary">新規投稿</a>
                     <a href="{{ route('users.show', auth()->user()) }}" class="nav-link">
                         <x-avatar :user="auth()->user()" :size="28" />
                         プロフィール
