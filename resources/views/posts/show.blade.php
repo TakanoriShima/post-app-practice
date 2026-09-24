@@ -16,10 +16,10 @@
         .page-title { padding: 0.55rem 1rem 0.7rem; font-weight: 800; font-size: 1.06rem; }
         .post { display: flex; gap: 0.75rem; padding: 0.9rem 1rem; border-bottom: 1px solid #EFF1F4; }
         .post.main { border-bottom: 1px solid #D3D9DE; }
-        .avatar { width: 44px; height: 44px; border-radius: 999px; flex-shrink: 0; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; }
         .post-body { flex: 1; min-width: 0; }
         .post-head { display: flex; align-items: baseline; gap: 0.3rem; flex-wrap: wrap; }
         .post-head .name { font-weight: 700; font-size: 0.94rem; }
+        .name-link:hover .name { text-decoration: underline; text-underline-offset: 3px; }
         .post-head .time { color: #5B6570; font-size: 0.82rem; font-variant-numeric: tabular-nums; }
         .post-head .time::before { content: "・"; margin-right: 0.05rem; color: #98A1A8; }
         .topic { margin-left: auto; border-radius: 999px; padding: 0.1rem 0.6rem; font-size: 0.7rem; font-weight: 700; }
@@ -43,33 +43,11 @@
 </head>
 <body>
     @php
-        // アイコンの色は登録した名前から決まる（crc32 % 18）。タイムラインと同じ配色
-        $grad = [
-            ['#5B8DEF', '#3F5FD0'],
-            ['#E8A23D', '#C97F1B'],
-            ['#34B58B', '#1E8A6E'],
-            ['#E05252', '#B93245'],
-            ['#8E6AE0', '#6748BE'],
-            ['#3FB0C9', '#2884A5'],
-            ['#F2865C', '#DB5A34'],
-            ['#6D7BE0', '#4A55C2'],
-            ['#8FAE3E', '#6C8A26'],
-            ['#31B183', '#188064'],
-            ['#7C93B5', '#56718F'],
-            ['#F7A934', '#E8721F'],
-            ['#EF6A6A', '#CE3A50'],
-            ['#9B6CE8', '#6E48C9'],
-            ['#E45FA3', '#C13A85'],
-            ['#B58A5C', '#8F653A'],
-            ['#55A8E2', '#3380BC'],
-            ['#4E9E8E', '#2F7A6B'],
-        ];
         $topicTone = [
             'お知らせ' => ['#FFF3DC', '#8A5714'],
             '技術メモ' => ['#E8F1FD', '#2F5AA8'],
             '雑記' => ['#F0F1F3', '#57606A'],
         ];
-        [$g1, $g2] = $grad[crc32($post->user->name) % count($grad)];
         [$tBg, $tFg] = $topicTone[$post->category->name] ?? ['#F0F1F3', '#57606A'];
     @endphp
     <div class="col">
@@ -82,10 +60,10 @@
 
         <main>
             <article class="post main">
-                <div class="avatar" style="background: linear-gradient(135deg, {{ $g1 }}, {{ $g2 }});">{{ mb_substr($post->user->name, 0, 1) }}</div>
+                <x-avatar :user="$post->user" :size="44" :link="true" />
                 <div class="post-body">
                     <div class="post-head">
-                        <span class="name">{{ $post->user->name }}</span>
+                        <a href="{{ route('users.show', $post->user) }}" class="name-link"><span class="name">{{ $post->user->name }}</span></a>
                         <span class="time">{{ $post->created_at->format('n月j日 H:i') }}</span>
                         <span class="topic" style="background: {{ $tBg }}; color: {{ $tFg }};">{{ $post->category->name }}</span>
                     </div>
@@ -100,14 +78,11 @@
                 <p class="empty">まだリプライがありません。</p>
             @else
                 @foreach ($replies as $reply)
-                    @php
-                        [$r1, $r2] = $grad[crc32($reply->user->name) % count($grad)];
-                    @endphp
                     <article class="post">
-                        <div class="avatar" style="background: linear-gradient(135deg, {{ $r1 }}, {{ $r2 }});">{{ mb_substr($reply->user->name, 0, 1) }}</div>
+                        <x-avatar :user="$reply->user" :size="44" :link="true" />
                         <div class="post-body">
                             <div class="post-head">
-                                <span class="name">{{ $reply->user->name }}</span>
+                                <a href="{{ route('users.show', $reply->user) }}" class="name-link"><span class="name">{{ $reply->user->name }}</span></a>
                                 <span class="time">{{ $reply->created_at->format('n月j日 H:i') }}</span>
                             </div>
                             <p class="post-text">{{ $reply->content }}</p>

@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'bio',
         'password',
     ];
 
@@ -43,6 +44,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /** アバター画像の URL。未設定なら null（その場合は頭文字のアイコンを出す） */
+    public function avatarUrl(): ?string
+    {
+        return filled($this->avatar_path) ? asset('storage/'.$this->avatar_path) : null;
+    }
 
     public function posts(): HasMany
     {

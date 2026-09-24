@@ -14,6 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ./vendor/bin/sail up -d                          # 起動（http://localhost）
 ./vendor/bin/sail artisan migrate --seed         # テーブル作成 + 練習用データ投入
 ./vendor/bin/sail artisan migrate:fresh --seed   # DB を作り直す
+./vendor/bin/sail artisan storage:link           # アバター画像の公開用リンク（各環境で最初に1回）
 ./vendor/bin/sail artisan test                   # 全テスト
 ./vendor/bin/sail artisan test --filter=メソッド名またはクラス名   # 単一テスト
 ./vendor/bin/sail bin pint                       # コード整形（Laravel Pint）
