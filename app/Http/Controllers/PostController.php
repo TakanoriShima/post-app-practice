@@ -10,9 +10,19 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['user', 'category'])->latest()->get();
+        $posts = Post::with(['user', 'category'])->withCount('replies')->latest()->get();
 
         return view('posts.index', compact('posts'));
+    }
+
+    public function show(Post $post)
+    {
+        $post->load(['user', 'category']);
+
+        // 古い順（同時刻なら id 順）
+        $replies = $post->replies()->with('user')->orderBy('created_at')->orderBy('id')->get();
+
+        return view('posts.show', compact('post', 'replies'));
     }
 
     public function edit(Post $post)

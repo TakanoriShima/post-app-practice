@@ -29,6 +29,8 @@
         .post-head .time::before { content: "・"; margin-right: 0.05rem; color: #98A1A8; }
         .topic { margin-left: auto; border-radius: 999px; padding: 0.1rem 0.6rem; font-size: 0.7rem; font-weight: 700; }
         .post-title { font-weight: 700; font-size: 0.96rem; margin: 0.28rem 0 0.06rem; }
+        .post-title a:hover { text-decoration: underline; text-underline-offset: 3px; }
+        .post-title .reply-count { color: #5B6570; font-weight: 400; font-size: 0.86rem; font-variant-numeric: tabular-nums; }
         .post-text { font-size: 0.94rem; line-height: 1.7; color: #0F1419; overflow-wrap: anywhere; }
         .post-actions { display: flex; gap: 1.2rem; margin-top: 0.5rem; }
         .post-actions a, .post-actions button { background: none; border: none; padding: 0; color: #5B6570; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: inherit; }
@@ -99,7 +101,7 @@
                                 <span class="time">{{ $post->created_at->format('n月j日 H:i') }}</span>
                                 <span class="topic" style="background: {{ $tBg }}; color: {{ $tFg }};">{{ $post->category->name }}</span>
                             </div>
-                            <p class="post-title">{{ $post->title }}</p>
+                            <p class="post-title"><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a> <span class="reply-count">({{ $post->replies_count }})</span></p>
                             <p class="post-text">{{ $post->content }}</p>
                             @canany(['update', 'delete'], $post)
                                 <div class="post-actions">
