@@ -28,10 +28,17 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
+        // ブラウザは改行を \r\n（2文字）で送るので、画面の文字数表示と揃えるため \n に正規化する
+        if (is_string($request->input('content'))) {
+            $request->merge(['content' => str_replace("\r\n", "\n", $request->input('content'))]);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string|max:140',
             'category_id' => 'required|exists:categories,id',
+        ], [
+            'content.max' => '本文は140字以内で入力してください。',
         ]);
 
         $post->update($validated);
