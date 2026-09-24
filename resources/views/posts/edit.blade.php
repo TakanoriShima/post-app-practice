@@ -28,6 +28,8 @@
         .btn-secondary:hover { background: #F7F8F9; }
         .btn:focus-visible { outline: 2px solid #E8792B; outline-offset: 2px; }
         .error { color: #D6402C; font-size: 0.83rem; margin-top: 0.3rem; }
+        .counter { color: #5B6570; font-size: 0.8rem; margin-top: 0.3rem; text-align: right; }
+        .counter.over { color: #D6402C; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -67,6 +69,8 @@
                 <div class="form-group">
                     <label for="content">本文</label>
                     <textarea id="content" name="content" required>{{ old('content', $post->content) }}</textarea>
+                    @php($remaining = 140 - mb_strlen(str_replace("\r\n", "\n", old('content', $post->content))))
+                    <p class="counter @if ($remaining < 0) over @endif">残り <span id="content-remaining">{{ $remaining }}</span> 字</p>
                     @error('content')
                         <p class="error">{{ $message }}</p>
                     @enderror
@@ -79,5 +83,18 @@
             </form>
         </main>
     </div>
+
+    <script>
+        const content = document.getElementById('content');
+        const remaining = document.getElementById('content-remaining');
+        const counter = remaining.parentElement;
+
+        content.addEventListener('input', () => {
+            // Array.from でサロゲートペアも 1 文字として数える（サーバーの mb_strlen と揃える）
+            const left = 140 - Array.from(content.value).length;
+            remaining.textContent = left;
+            counter.classList.toggle('over', left < 0);
+        });
+    </script>
 </body>
 </html>
